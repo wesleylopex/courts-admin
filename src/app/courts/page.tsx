@@ -52,25 +52,27 @@ export default function Courts() {
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
-    if (debounceTimeout.current) {
-      clearTimeout(debounceTimeout.current)
+    function filterCourts () {
+      const q = search.trim().toLowerCase()
+  
+      if (!q) {
+        return setFilteredCourts(allCourts)
+      }
+
+      setFilteredCourts(allCourts.filter(court => court.name.toLowerCase().includes(q)))
     }
 
-    debounceTimeout.current = setTimeout(() => {
-      const q = search.trim().toLowerCase()
-
-      if (!q) {
-        setFilteredCourts(allCourts)
-      } else {
-        setFilteredCourts(allCourts.filter(court => court.name.toLowerCase().includes(q)))
-      }
-    }, 300)
-
-    return () => {
+    function customClearTimeout () {
       if (debounceTimeout.current) {
         clearTimeout(debounceTimeout.current)
       }
     }
+
+    customClearTimeout()
+
+    debounceTimeout.current = setTimeout(filterCourts, 300)
+
+    return customClearTimeout
   }, [search])
 
   return (
