@@ -1,6 +1,9 @@
+'use client'
+
+import { useEffect, useRef, useState } from 'react'
 import { Edit, Plus, SearchIcon, Trash } from 'lucide-react'
 
-import Navbar from '../components/Navbar'
+import Navbar from '../components/navbar'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -15,7 +18,7 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 
-const courts = [
+const allCourts = [
   {
     id: '1',
     name: 'Quadra 1',
@@ -44,6 +47,32 @@ const courts = [
 ]
 
 export default function Courts() {
+  const [search, setSearch] = useState('')
+  const [filteredCourts, setFilteredCourts] = useState(allCourts)
+  const debounceTimeout = useRef<NodeJS.Timeout | null>(null)
+
+  useEffect(() => {
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current)
+    }
+
+    debounceTimeout.current = setTimeout(() => {
+      const q = search.trim().toLowerCase()
+
+      if (!q) {
+        setFilteredCourts(allCourts)
+      } else {
+        setFilteredCourts(allCourts.filter(court => court.name.toLowerCase().includes(q)))
+      }
+    }, 300)
+
+    return () => {
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current)
+      }
+    }
+  }, [search])
+
   return (
     <div>
       <Navbar />
@@ -60,6 +89,8 @@ export default function Courts() {
               className="peer ps-9 pe-9"
               placeholder="Pesquisar quadras..."
               type="search"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
             />
             <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
               <SearchIcon size={16} />
@@ -76,7 +107,7 @@ export default function Courts() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {courts.map((court) => (
+            {filteredCourts.map((court) => (
               <TableRow key={court.id}>
                 <TableCell>{court.id}</TableCell>
                 <TableCell>{court.name}</TableCell>
