@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
+import React from 'react'
 
 interface Link {
   href: string
@@ -20,14 +21,14 @@ export default function BreadcrumbHelper ({ links }: Props) {
       <Breadcrumb>
         <BreadcrumbList>
           {normalLinks.map(link => (
-            <>
-              <BreadcrumbItem key={link.href}>
+            <React.Fragment key={link.href}>
+              <BreadcrumbItem>
                 <BreadcrumbLink asChild>
                   <Link href={link.href}>{link.label}</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
-            </>
+            </React.Fragment>
           ))}
           {currentLink && (
             <BreadcrumbItem key={currentLink.href}>
