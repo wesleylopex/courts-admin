@@ -34,7 +34,7 @@ export default function RootLayout({
     <>
       <html lang="pt-br" suppressHydrationWarning>
         <body
-          className={`${poppins.variable} antialiased`}
+          className={`${poppins.variable} antialiased pb-20`}
         >
           <ThemeProvider
             attribute="class"

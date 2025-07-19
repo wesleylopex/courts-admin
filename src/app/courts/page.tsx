@@ -25,26 +25,36 @@ const allCourts = [
   {
     id: '1',
     name: 'Quadra 1',
+    pricePerHour: 7000,
+    allowRecurring: false,
     isActive: true
   },
   {
     id: '2',
     name: 'Quadra 2',
+    pricePerHour: 8500,
+    allowRecurring: true,
     isActive: true
   },
   {
     id: '3',
     name: 'Quadra 3',
+    pricePerHour: 11000,
+    allowRecurring: true,
     isActive: true
   },
   {
     id: '4',
     name: 'Quadra 4',
+    pricePerHour: 12000,
+    allowRecurring: true,
     isActive: false
   },
   {
     id: '5',
     name: 'Quadra 5',
+    pricePerHour: 6000,
+    allowRecurring: true,
     isActive: true
   }
 ]
@@ -133,7 +143,9 @@ export default function Courts() {
                 <TableRow className="hover:bg-transparent">
                   <TableHead>#</TableHead>
                   <TableHead>Nome</TableHead>
+                  <TableHead>Valor/Hora</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>Recorrência</TableHead>
                   <TableHead>Ações</TableHead>
                 </TableRow>
               </TableHeader>
@@ -142,8 +154,20 @@ export default function Courts() {
                   <TableRow key={court.id}>
                     <TableCell>{court.id}</TableCell>
                     <TableCell>{court.name}</TableCell>
+                    <TableCell>{
+                      (court.pricePerHour / 100).toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL',
+                        minimumFractionDigits: 2
+                      })
+                    }</TableCell>
                     <TableCell>
                       <Badge variant="secondary">{court.isActive ? 'Ativa' : 'Inativa'}</Badge>
+                    </TableCell>
+                    <TableCell>
+                      {court.allowRecurring && (
+                        <Badge variant="secondary">Recorrente</Badge>
+                      )}
                     </TableCell>
                     <TableCell>
                       <Button variant="secondary" size="icon" className="mr-2 size-8">
