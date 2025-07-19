@@ -36,6 +36,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.5",
     "git-commit-msg-linter": "^5.0.8",
+    "react-number-format": "^5.4.4",
     "tailwindcss": "^4.1.11",
     "tw-animate-css": "^1.3.5",
     "typescript": "^5"

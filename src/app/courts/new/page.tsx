@@ -1,8 +1,10 @@
 'use client'
 
+import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { NumericFormat } from 'react-number-format'
+import { CircleDollarSign } from 'lucide-react'
 
 import Navbar from '@/app/components/navbar'
 import { Card, CardContent, CardTitle, CardHeader, CardFooter } from '@/components/ui/card'
@@ -18,6 +20,7 @@ const formSchema = z.object({
   isActive: z.boolean(),
   allowRecurring: z.boolean(),
   name: z.string().min(1, 'O nome é obrigatório'),
+  pricePerHour: z.number().min(1, 'O preço por hora é obrigatório')
 })
 
 type FormData = z.infer<typeof formSchema>
@@ -28,7 +31,8 @@ export default function NewCourt () {
     defaultValues: {
       isActive: true,
       allowRecurring: true,
-      name: ''
+      name: '',
+      pricePerHour: 0
     }
   })
 
@@ -67,7 +71,7 @@ export default function NewCourt () {
                 <CardTitle className="text-2xl font-semibold">Nova quadra</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 items-start">
                   <div className="col-span-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     <FormField
                       control={form.control}
@@ -141,6 +145,46 @@ export default function NewCourt () {
                     )}
                   >
                   </FormField>
+
+                  <FormField
+                    control={form.control}
+                    name="pricePerHour"
+                    render={() => (
+                      <FormItem>
+                        <FormLabel>Preço por hora</FormLabel>
+                        <FormControl>
+                          <Controller
+                            control={form.control}
+                            name="pricePerHour"
+                            render={({ field: controllerField }) => (
+                              <div className="relative flex items-center">
+                                <span className="absolute left-3 text-muted-foreground">
+                                  <CircleDollarSign className="w-5 h-5" />
+                                </span>
+                                <NumericFormat
+                                  value={controllerField.value / 100 || ''}
+                                  thousandSeparator="."
+                                  decimalSeparator="," 
+                                  decimalScale={2}
+                                  fixedDecimalScale
+                                  allowNegative={false}
+                                  prefix="R$ "
+                                  customInput={Input}
+                                  className="pl-10"
+                                  placeholder="Preço por hora"
+                                  onValueChange={(values: { floatValue?: number }) => {
+                                    controllerField.onChange(values.floatValue ? Math.round(values.floatValue * 100) : 0)
+                                  }}
+                                  onBlur={controllerField.onBlur}
+                                />
+                              </div>
+                            )}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
               </CardContent>
               <CardFooter className="flex items-center justify-end gap-2">
