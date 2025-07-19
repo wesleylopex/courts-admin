@@ -17,6 +17,9 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import Link from 'next/link'
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import BreadcrumbHelper from '../components/breadcrumb'
 
 const allCourts = [
   {
@@ -75,59 +78,87 @@ export default function Courts() {
     return customClearTimeout
   }, [search])
 
+  const breadcrumbs = [
+    {
+      href: '/',
+      label: 'Home'
+    },
+    {
+      href: '/courts',
+      label: 'Quadras',
+      isCurrent: true
+    }
+  ]
+
   return (
     <div>
       <Navbar />
       <main className="max-w-7xl mx-auto mt-10">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-semibold">Quadras</h1>
-          <Button>
-            <Plus /> Nova quadra
-          </Button>
+        <div className="flex justify-end">
+          <BreadcrumbHelper links={breadcrumbs} />
         </div>
-        <div className="mt-6">
-          <div className="relative w-full max-w-xs">
-            <Input
-              className="peer ps-9 pe-9"
-              placeholder="Pesquisar quadras..."
-              type="search"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-            />
-            <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
-              <SearchIcon size={16} />
+        <Card className="mt-10">
+          <CardHeader>
+            <CardTitle className="text-2xl font-semibold">Quadras</CardTitle>
+            <CardDescription>
+              <span className="text-muted-foreground">
+                Gerencie e visualize as quadras cadastradas no sistema.
+              </span>
+            </CardDescription>
+            <CardAction>
+              <Link href="/courts/new">
+                <Button>
+                  <Plus /> Nova quadra
+                </Button>
+              </Link>
+            </CardAction>
+          </CardHeader>
+          <CardContent>
+            <div className="mt-6">
+              <div className="relative w-full max-w-xs">
+                <Input
+                  className="peer ps-9 pe-9"
+                  placeholder="Pesquisar quadras..."
+                  type="search"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                />
+                <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
+                  <SearchIcon size={16} />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <Table className="mt-10">
-          <TableHeader>
-            <TableRow className="hover:bg-transparent">
-              <TableHead>#</TableHead>
-              <TableHead>Nome</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Ações</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredCourts.map((court) => (
-              <TableRow key={court.id}>
-                <TableCell>{court.id}</TableCell>
-                <TableCell>{court.name}</TableCell>
-                <TableCell>
-                  <Badge variant="secondary">{court.isActive ? 'Ativa' : 'Inativa'}</Badge>
-                </TableCell>
-                <TableCell>
-                  <Button variant="secondary" size="icon" className="mr-2 size-8">
-                    <Edit />
-                  </Button>
-                  <Button variant="secondary" size="icon" className="size-8">
-                    <Trash />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            <Table className="mt-10">
+              <TableHeader>
+                <TableRow className="hover:bg-transparent">
+                  <TableHead>#</TableHead>
+                  <TableHead>Nome</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Ações</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredCourts.map((court) => (
+                  <TableRow key={court.id}>
+                    <TableCell>{court.id}</TableCell>
+                    <TableCell>{court.name}</TableCell>
+                    <TableCell>
+                      <Badge variant="secondary">{court.isActive ? 'Ativa' : 'Inativa'}</Badge>
+                    </TableCell>
+                    <TableCell>
+                      <Button variant="secondary" size="icon" className="mr-2 size-8">
+                        <Edit />
+                      </Button>
+                      <Button variant="secondary" size="icon" className="size-8">
+                        <Trash />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       </main>
     </div>
   )
