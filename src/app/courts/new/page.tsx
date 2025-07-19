@@ -16,15 +16,44 @@ import { Checkbox } from '@/components/ui/checkbox'
 import BreadcrumbHelper from '@/app/components/breadcrumb'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import MultipleSelector from '@/components/ui/multiselect'
 
 const formSchema = z.object({
   isActive: z.boolean(),
   allowRecurring: z.boolean(),
   name: z.string().min(1, 'O nome é obrigatório'),
-  pricePerHour: z.number().min(1, 'O preço por hora é obrigatório')
+  pricePerHour: z.number().min(1, 'O preço por hora é obrigatório'),
+  sports: z.array(z.string()).min(1, 'Selecione pelo menos um esporte')
 })
 
 type FormData = z.infer<typeof formSchema>
+
+const sports = [
+  {
+    value: 'Futebol',
+    label: 'Futebol',
+  },
+  {
+    value: 'Vôlei',
+    label: 'Vôlei',
+  },
+  {
+    value: 'Basquete',
+    label: 'Basquete',
+  },
+  {
+    value: 'Handebol',
+    label: 'Handebol',
+  },
+  {
+    value: 'Vôlei de praia',
+    label: 'Vôlei de praia'
+  },
+  {
+    value: 'Beach tênis',
+    label: 'Beach tênis'
+  }
+]
 
 export default function NewCourt () {
   const form = useForm<FormData>({
@@ -33,7 +62,8 @@ export default function NewCourt () {
       isActive: true,
       allowRecurring: true,
       name: '',
-      pricePerHour: 0
+      pricePerHour: 0,
+      sports: []
     }
   })
 
@@ -81,7 +111,7 @@ export default function NewCourt () {
                         <FormItem>
                           <FormControl>
                             <div>
-                              <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-white dark:has-[[aria-checked=true]]:border-white">
+                              <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 dark:has-[[aria-checked=true]]:border-white">
                                 <Checkbox
                                   id="is-active"
                                   checked={field.value}
@@ -89,10 +119,10 @@ export default function NewCourt () {
                                 />
                                 <div className="grid gap-1.5 font-normal">
                                   <p className="text-sm leading-none font-medium">
-                                    Ativa / Inativa
+                                    Ocultar
                                   </p>
                                   <p className="text-muted-foreground text-sm">
-                                    Defina se a quadra estará visível para os usuários
+                                    Marque esta opção para ocultar esta quadra do site
                                   </p>
                                 </div>
                               </Label>
@@ -109,7 +139,7 @@ export default function NewCourt () {
                         <FormItem>
                           <FormControl>
                             <div>
-                              <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-white dark:has-[[aria-checked=true]]:border-white">
+                              <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 dark:has-[[aria-checked=true]]:border-white">
                                 <Checkbox
                                   id="allow-recurring"
                                   checked={field.value}
@@ -120,7 +150,7 @@ export default function NewCourt () {
                                     Permitir recorrência
                                   </p>
                                   <p className="text-muted-foreground text-sm">
-                                    Defina se a quadra pode ser reservada com recorrência
+                                    Marque esta opção para permitir recorrência de reservas
                                   </p>
                                 </div>
                               </Label>
@@ -179,6 +209,37 @@ export default function NewCourt () {
                                   onBlur={controllerField.onBlur}
                                 />
                               </div>
+                            )}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="sports"
+                    render={() => (
+                      <FormItem>
+                        <FormLabel>Esporte</FormLabel>
+                        <FormControl>
+                          <Controller
+                            control={form.control}
+                            name="sports"
+                            render={({ field: controllerField }) => (
+                              <MultipleSelector
+                                commandProps={{
+                                  label: 'Select frameworks',
+                                }}
+                                value={sports.filter(option => controllerField.value.includes(option.value))}
+                                onChange={(selectedOptions) => controllerField.onChange(selectedOptions.map(opt => opt.value))}
+                                defaultOptions={sports}
+                                placeholder="Selecione os esportes disponíveis"
+                                hideClearAllButton
+                                hidePlaceholderWhenSelected
+                                emptyIndicator={<p className="text-center text-sm">No results found</p>}
+                              />
                             )}
                           />
                         </FormControl>
