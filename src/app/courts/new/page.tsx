@@ -15,6 +15,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 
 import BreadcrumbHelper from '@/app/components/breadcrumb'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 const formSchema = z.object({
   isActive: z.boolean(),
@@ -188,9 +189,11 @@ export default function NewCourt () {
                 </div>
               </CardContent>
               <CardFooter className="flex items-center justify-end gap-2">
-                <Button type="button" variant="secondary">
-                  Cancelar
-                </Button>
+                <Link href="/courts">
+                  <Button type="button" variant="secondary">
+                    Cancelar
+                  </Button>
+                </Link>
                 <Button type="submit">
                   Pronto
                 </Button>
