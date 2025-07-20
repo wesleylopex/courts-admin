@@ -20,7 +20,7 @@ import MultipleSelector from '@/components/ui/multiselect'
 
 const formSchema = z.object({
   isActive: z.boolean(),
-  allowRecurring: z.boolean(),
+  allowRecurrence: z.boolean(),
   name: z.string().min(1, 'O nome é obrigatório'),
   pricePerHour: z.number().min(1, 'O preço por hora é obrigatório'),
   sports: z.array(z.string()).min(1, 'Selecione pelo menos um esporte')
@@ -60,7 +60,7 @@ export default function NewCourt () {
     resolver: zodResolver(formSchema),
     defaultValues: {
       isActive: true,
-      allowRecurring: true,
+      allowRecurrence: true,
       name: '',
       pricePerHour: 0,
       sports: []
@@ -134,14 +134,14 @@ export default function NewCourt () {
                     />
                     <FormField
                       control={form.control}
-                      name="allowRecurring"
+                      name="allowRecurrence"
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
                             <div>
                               <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 dark:has-[[aria-checked=true]]:border-white">
                                 <Checkbox
-                                  id="allow-recurring"
+                                  id="allow-recurrence"
                                   checked={field.value}
                                   onCheckedChange={field.onChange}
                                 />
@@ -216,7 +216,6 @@ export default function NewCourt () {
                       </FormItem>
                     )}
                   />
-
                   <FormField
                     control={form.control}
                     name="sports"
