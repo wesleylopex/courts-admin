@@ -1,6 +1,9 @@
 'use client'
 
+import Link from 'next/link'
 import { Controller, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+
 import { NumericFormat } from 'react-number-format'
 import { CircleDollarSign } from 'lucide-react'
 
@@ -9,13 +12,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
-
 import { Button } from '@/components/ui/button'
-import Link from 'next/link'
 import MultipleSelector from '@/components/ui/multiselect'
 import { Separator } from '@/components/ui/separator'
+
 import OpeningHours from '../_components/opening-hours'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { CourtFormData, courtFormSchema } from '../schemas/court-schema'
 
 type CourtFormProps = {
@@ -57,7 +58,8 @@ export default function CourtForm ({ onSubmit }: CourtFormProps) {
       allowRecurrence: true,
       name: '',
       pricePerHour: 0,
-      sports: []
+      sports: [],
+      openingHours: []
     }
   })
 
