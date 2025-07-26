@@ -17,6 +17,8 @@ import BreadcrumbHelper from '@/app/components/breadcrumb'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import MultipleSelector from '@/components/ui/multiselect'
+import { Separator } from '@/components/ui/separator'
+import OpeningHours from '../components/opening-hours'
 
 const formSchema = z.object({
   isActive: z.boolean(),
@@ -102,8 +104,8 @@ export default function NewCourt () {
                 <CardTitle className="text-2xl font-semibold">Nova quadra</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 items-start">
-                  <div className="col-span-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 items-start">
+                  <div className="col-span-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
                     <FormField
                       control={form.control}
                       name="isActive"
@@ -246,6 +248,16 @@ export default function NewCourt () {
                       </FormItem>
                     )}
                   />
+
+                  <div className="col-span-full">
+                    <Separator className="mt-4" />
+                    <h1 className="mt-8 font-semibold">Horários disponíveis</h1>
+                  </div>
+
+                  <div className="col-span-full">
+                    <OpeningHours />
+                  </div>
+
                 </div>
               </CardContent>
               <CardFooter className="flex items-center justify-end gap-2">
