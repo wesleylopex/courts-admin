@@ -1,7 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Edit, Plus, SearchIcon, Trash } from 'lucide-react'
+
+import { useQuery } from '@tanstack/react-query'
 
 import Navbar from '../components/navbar'
 
@@ -21,9 +23,8 @@ import Link from 'next/link'
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import BreadcrumbHelper from '../components/breadcrumb'
 
-import { Court } from '@/types/court'
-
 import { getCourts } from '@/services/court-service'
+import { CourtSkeletonLoader } from './components/court-skeleton-loader'
 
 const breadcrumbs = [
   {
@@ -37,44 +38,13 @@ const breadcrumbs = [
   }
 ]
 
-export default function Courts() {
+export default function Courts () {
   const [search, setSearch] = useState('')
-  const [courts, setCourts] = useState<Court[]>([])
-  // const debounceTimeout = useRef<NodeJS.Timeout | null>(null)
 
-  useEffect(() => {
-    async function fetchCourts () {
-      const courts = await getCourts()
-
-      setCourts(courts)
-    }
-
-    fetchCourts()
-  }, [])
-
-  // useEffect(() => {
-  //   function filterCourts () {
-  //     const q = search.trim().toLowerCase()
-  
-  //     if (!q) {
-  //       return setFilteredCourts(allCourts)
-  //     }
-
-  //     setFilteredCourts(allCourts.filter(court => court.name.toLowerCase().includes(q)))
-  //   }
-
-  //   function customClearTimeout () {
-  //     if (debounceTimeout.current) {
-  //       clearTimeout(debounceTimeout.current)
-  //     }
-  //   }
-
-  //   customClearTimeout()
-
-  //   debounceTimeout.current = setTimeout(filterCourts, 300)
-
-  //   return customClearTimeout
-  // }, [search])
+  const { data: courts, isLoading: courtsLoading } = useQuery({
+    queryKey: ['courts'],
+    queryFn: getCourts
+  })
 
   return (
     <div>
@@ -126,7 +96,9 @@ export default function Courts() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {courts.map((court) => (
+                {courtsLoading
+                ? <CourtSkeletonLoader />
+                : courts?.map((court) => (
                   <TableRow key={court.id}>
                     <TableCell>{court.id}</TableCell>
                     <TableCell>{court.name}</TableCell>

@@ -4,6 +4,8 @@ import './globals.css'
 
 import { ThemeProvider } from '@/components/theme-provider'
 
+import QueryProvider from '@/providers/query-provider'
+
 const poppins = Poppins({
   variable: '--font-poppins',
   subsets: ['latin'],
@@ -33,16 +35,16 @@ export default function RootLayout({
   return (
     <>
       <html lang="pt-br" suppressHydrationWarning>
-        <body
-          className={`${poppins.variable} antialiased pb-20`}
-        >
+        <body className={`${poppins.variable} antialiased pb-20`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <QueryProvider>
+              {children}
+            </QueryProvider>
           </ThemeProvider>
         </body>
       </html>

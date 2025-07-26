@@ -83,8 +83,8 @@ export default function OpeningHours () {
                 <span className="w-full text-center text-muted-foreground italic">Fechado</span>
               ) : (
                 <div className="flex flex-col gap-2 w-full">
-                  {openingHour.intervals.map(interval => (
-                    <div className="flex gap-4 items-center w-full" key={interval.start}>
+                  {openingHour.intervals.map((interval, index) => (
+                    <div className="flex gap-4 items-center w-full" key={index}>
                       <div className="relative w-[120px]">
                         <Input
                           id="start"
