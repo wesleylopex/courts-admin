@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Edit, Plus, SearchIcon, Trash } from 'lucide-react'
+import Link from 'next/link'
 
 import { useQuery } from '@tanstack/react-query'
 
@@ -19,7 +20,6 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import Link from 'next/link'
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import BreadcrumbHelper from '@/components/breadcrumb'
 
@@ -45,6 +45,8 @@ export default function Courts () {
     queryKey: ['courts'],
     queryFn: getCourts
   })
+
+  const id = crypto.randomUUID()
 
   return (
     <div>
@@ -118,9 +120,11 @@ export default function Courts () {
                       )}
                     </TableCell>
                     <TableCell>
-                      <Button variant="secondary" size="icon" className="mr-2 size-8">
-                        <Edit />
-                      </Button>
+                      <Link href={`/courts/${id}`}>
+                        <Button variant="secondary" size="icon" className="mr-2 size-8">
+                          <Edit />
+                        </Button>
+                      </Link>
                       <Button variant="secondary" size="icon" className="size-8">
                         <Trash />
                       </Button>

@@ -16,7 +16,7 @@ export const courtFormSchema = z.object({
         })
       )
     })
-  )
+  ).optional()
 })
 
 export type CourtFormData = z.infer<typeof courtFormSchema>
