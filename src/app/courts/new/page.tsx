@@ -6,19 +6,19 @@ import { z } from 'zod'
 import { NumericFormat } from 'react-number-format'
 import { CircleDollarSign } from 'lucide-react'
 
-import Navbar from '@/app/components/navbar'
+import Navbar from '@/components/navbar'
 import { Card, CardContent, CardTitle, CardHeader, CardFooter } from '@/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 
-import BreadcrumbHelper from '@/app/components/breadcrumb'
+import BreadcrumbHelper from '@/components/breadcrumb'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import MultipleSelector from '@/components/ui/multiselect'
 import { Separator } from '@/components/ui/separator'
-import OpeningHours from '../components/opening-hours'
+import OpeningHours from '../_components/opening-hours'
 
 const formSchema = z.object({
   isActive: z.boolean(),

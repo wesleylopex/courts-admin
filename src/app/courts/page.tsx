@@ -5,7 +5,7 @@ import { Edit, Plus, SearchIcon, Trash } from 'lucide-react'
 
 import { useQuery } from '@tanstack/react-query'
 
-import Navbar from '../components/navbar'
+import Navbar from '@/components/navbar'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -21,10 +21,10 @@ import {
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import BreadcrumbHelper from '../components/breadcrumb'
+import BreadcrumbHelper from '@/components/breadcrumb'
 
 import { getCourts } from '@/services/court-service'
-import { CourtSkeletonLoader } from './components/court-skeleton-loader'
+import { CourtSkeletonLoader } from './_components/court-skeleton-loader'
 
 const breadcrumbs = [
   {

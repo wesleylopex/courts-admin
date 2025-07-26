@@ -1,6 +1,6 @@
-import BreadcrumbHelper from './components/breadcrumb'
-import Navbar from './components/navbar'
-import { SectionCards } from './components/section-cards'
+import BreadcrumbHelper from '@/components/breadcrumb'
+import Navbar from '@/components/navbar'
+import { SectionCards } from './_components/section-cards'
 
 export default function Home() {
   const breadcrumbs = [
