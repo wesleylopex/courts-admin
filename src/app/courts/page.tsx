@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Edit, Plus, SearchIcon, Trash } from 'lucide-react'
 
 import Navbar from '../components/navbar'
@@ -21,84 +21,60 @@ import Link from 'next/link'
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import BreadcrumbHelper from '../components/breadcrumb'
 
-const allCourts = [
+import { Court } from '@/types/court'
+
+import { getCourts } from '@/services/court-service'
+
+const breadcrumbs = [
   {
-    id: '1',
-    name: 'Quadra 1',
-    pricePerHour: 7000,
-    allowRecurring: false,
-    isActive: true
+    href: '/',
+    label: 'Home'
   },
   {
-    id: '2',
-    name: 'Quadra 2',
-    pricePerHour: 8500,
-    allowRecurring: true,
-    isActive: true
-  },
-  {
-    id: '3',
-    name: 'Quadra 3',
-    pricePerHour: 11000,
-    allowRecurring: true,
-    isActive: true
-  },
-  {
-    id: '4',
-    name: 'Quadra 4',
-    pricePerHour: 12000,
-    allowRecurring: true,
-    isActive: false
-  },
-  {
-    id: '5',
-    name: 'Quadra 5',
-    pricePerHour: 6000,
-    allowRecurring: true,
-    isActive: true
+    href: '/courts',
+    label: 'Quadras',
+    isCurrent: true
   }
 ]
 
 export default function Courts() {
   const [search, setSearch] = useState('')
-  const [filteredCourts, setFilteredCourts] = useState(allCourts)
-  const debounceTimeout = useRef<NodeJS.Timeout | null>(null)
+  const [courts, setCourts] = useState<Court[]>([])
+  // const debounceTimeout = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
-    function filterCourts () {
-      const q = search.trim().toLowerCase()
+    async function fetchCourts () {
+      const courts = await getCourts()
+
+      setCourts(courts)
+    }
+
+    fetchCourts()
+  }, [])
+
+  // useEffect(() => {
+  //   function filterCourts () {
+  //     const q = search.trim().toLowerCase()
   
-      if (!q) {
-        return setFilteredCourts(allCourts)
-      }
+  //     if (!q) {
+  //       return setFilteredCourts(allCourts)
+  //     }
 
-      setFilteredCourts(allCourts.filter(court => court.name.toLowerCase().includes(q)))
-    }
+  //     setFilteredCourts(allCourts.filter(court => court.name.toLowerCase().includes(q)))
+  //   }
 
-    function customClearTimeout () {
-      if (debounceTimeout.current) {
-        clearTimeout(debounceTimeout.current)
-      }
-    }
+  //   function customClearTimeout () {
+  //     if (debounceTimeout.current) {
+  //       clearTimeout(debounceTimeout.current)
+  //     }
+  //   }
 
-    customClearTimeout()
+  //   customClearTimeout()
 
-    debounceTimeout.current = setTimeout(filterCourts, 300)
+  //   debounceTimeout.current = setTimeout(filterCourts, 300)
 
-    return customClearTimeout
-  }, [search])
-
-  const breadcrumbs = [
-    {
-      href: '/',
-      label: 'Home'
-    },
-    {
-      href: '/courts',
-      label: 'Quadras',
-      isCurrent: true
-    }
-  ]
+  //   return customClearTimeout
+  // }, [search])
 
   return (
     <div>
@@ -150,7 +126,7 @@ export default function Courts() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredCourts.map((court) => (
+                {courts.map((court) => (
                   <TableRow key={court.id}>
                     <TableCell>{court.id}</TableCell>
                     <TableCell>{court.name}</TableCell>
@@ -165,8 +141,8 @@ export default function Courts() {
                       <Badge variant="secondary">{court.isActive ? 'Ativa' : 'Inativa'}</Badge>
                     </TableCell>
                     <TableCell>
-                      {court.allowRecurring && (
-                        <Badge variant="secondary">Recorrente</Badge>
+                      {court.allowsRecurrence && (
+                        <Badge variant="secondary">Sim</Badge>
                       )}
                     </TableCell>
                     <TableCell>
