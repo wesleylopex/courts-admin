@@ -57,6 +57,22 @@ const sports = [
   }
 ]
 
+const breadcrumbs = [
+  {
+    href: '/',
+    label: 'Home'
+  },
+  {
+    href: '/courts',
+    label: 'Quadras'
+  },
+  {
+    href: '/courts/new',
+    label: 'Nova quadra',
+    isCurrent: true
+  }
+]
+
 export default function NewCourt () {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -72,22 +88,6 @@ export default function NewCourt () {
   function onSubmit (data: FormData) {
     console.log(data)
   }
-
-  const breadcrumbs = [
-    {
-      href: '/',
-      label: 'Home'
-    },
-    {
-      href: '/courts',
-      label: 'Quadras'
-    },
-    {
-      href: '/courts/new',
-      label: 'Nova quadra',
-      isCurrent: true
-    }
-  ]
 
   return (
     <div>

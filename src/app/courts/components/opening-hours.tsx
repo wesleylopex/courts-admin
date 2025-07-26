@@ -4,9 +4,10 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { ClockIcon, PlusCircle } from 'lucide-react'
+import { ClockIcon, MinusCircle, PlusCircle } from 'lucide-react'
+import { useState } from 'react'
 
-const openingHours = [
+const defaultOpeningHours = [
   {
     day: 'sunday',
     intervals: []
@@ -52,28 +53,81 @@ const openingHours = [
   }
 ]
 
-export default function OpeningHours () {
-  function translateDay (day: string) {
-    const days = {
-      sunday: 'Domingo',
-      monday: 'Segunda',
-      tuesday: 'Terça',
-      wednesday: 'Quarta',
-      thursday: 'Quinta',
-      friday: 'Sexta',
-      saturday: 'Sábado'
-    } as const
+function translateDay (day: string) {
+  const days = {
+    sunday: 'Domingo',
+    monday: 'Segunda',
+    tuesday: 'Terça',
+    wednesday: 'Quarta',
+    thursday: 'Quinta',
+    friday: 'Sexta',
+    saturday: 'Sábado'
+  } as const
 
-    return days[day as keyof typeof days]
+  return days[day as keyof typeof days]
+}
+
+export default function OpeningHours () {
+  const [openingHours, setOpeningHours] = useState(defaultOpeningHours)
+
+  function addInterval (day: string) {
+    setOpeningHours(prev => {
+      const newOpeningHours = prev.map(openingHour => {
+        if (openingHour.day === day) {
+          return {
+            ...openingHour,
+            intervals: [...openingHour.intervals, { start: '', end: '' }]
+          }
+        }
+        return openingHour
+      })
+      return newOpeningHours
+    })
+  }
+
+  function deleteInterval (day: string) {
+    setOpeningHours(prev => {
+      const newOpeningHours = prev.map(openingHour => {
+        if (openingHour.day === day) {
+          return {
+            ...openingHour,
+            intervals: openingHour.intervals.slice(0, -1)
+          }
+        }
+        return openingHour
+      })
+      return newOpeningHours
+    })
+  }
+
+  function toggleOpeningHour (day: string) {
+    const defaultInterval = [{ start: '', end: '' }]
+    
+    setOpeningHours(prev => {
+      const newOpeningHours = prev.map(openingHour => {
+        if (openingHour.day === day) {
+          return {
+            ...openingHour,
+            intervals: openingHour.intervals.length === 0 ? defaultInterval : []
+          }
+        }
+        return openingHour
+      })
+      return newOpeningHours
+    })
   }
 
   return (
     <div>
-      <div className="max-w-lg w-full flex flex-col gap-2">
+      <div className="max-w-lg w-full grid gap-2">
         {openingHours.map(openingHour => (
-          <div className="flex items-center gap-4 w-full py-2" key={openingHour.day}>
-            <div className="flex items-center gap-2 min-w-[120px]">
-              <Checkbox id={openingHour.day} />
+          <div className="flex items-center space-x-4 w-full py-2" key={openingHour.day}>
+            <div className="flex items-center gap-2 min-w-32">
+              <Checkbox
+                id={openingHour.day}
+                checked={openingHour.intervals.length > 0}
+                onCheckedChange={() => toggleOpeningHour(openingHour.day)}
+              />
               <Label htmlFor={openingHour.day} className="capitalize text-base font-medium">
                 {translateDay(openingHour.day)}
               </Label>
@@ -82,10 +136,13 @@ export default function OpeningHours () {
               {openingHour.intervals.length === 0 ? (
                 <span className="w-full text-center text-muted-foreground italic">Fechado</span>
               ) : (
-                <div className="flex flex-col gap-2 w-full">
+                <div className="grid gap-2 w-full">
                   {openingHour.intervals.map((interval, index) => (
                     <div className="flex gap-4 items-center w-full" key={index}>
-                      <div className="relative w-[120px]">
+                      <div className="relative w-32">
+                        <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
+                          <ClockIcon size={16} aria-hidden="true" />
+                        </div>
                         <Input
                           id="start"
                           type="time"
@@ -93,12 +150,12 @@ export default function OpeningHours () {
                           defaultValue={interval.start}
                           className="peer appearance-none ps-9 w-full [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
                         />
+                      </div>
+                      <span className="text-sm font-medium">até</span>
+                      <div className="relative w-32">
                         <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                           <ClockIcon size={16} aria-hidden="true" />
                         </div>
-                      </div>
-                      <span className="text-sm font-medium">até</span>
-                      <div className="relative w-[120px]">
                         <Input
                           id="end"
                           type="time"
@@ -106,19 +163,23 @@ export default function OpeningHours () {
                           defaultValue={interval.end}
                           className="peer appearance-none ps-9 w-full [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
                         />
-                        <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
-                          <ClockIcon size={16} aria-hidden="true" />
-                        </div>
                       </div>
                     </div>
                   ))}
                 </div>
               )}
             </div>
-            <div className="flex items-center justify-center min-w-[40px]">
-              <Button variant="ghost" type="button" size="icon">
-                <PlusCircle size={16} />
-              </Button>
+            <div className="grid grid-cols-2 gap-1 min-w-20">
+              {openingHour.intervals.length > 0 && (
+                <Button onClick={() => addInterval(openingHour.day)} variant="ghost" type="button" size="icon">
+                  <PlusCircle size={16} />
+                </Button>
+              )}
+              {openingHour.intervals.length >= 2 && (
+                <Button onClick={() => deleteInterval(openingHour.day)} variant="ghost" type="button" size="icon">
+                  <MinusCircle size={16} />
+                </Button>
+              )}
             </div>
           </div>
         ))}
