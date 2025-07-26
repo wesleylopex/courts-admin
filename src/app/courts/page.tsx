@@ -62,7 +62,7 @@ export default function Courts () {
               </span>
             </CardDescription>
             <CardAction>
-              <Link href="/courts/new">
+              <Link href="/courts/create">
                 <Button>
                   <Plus /> Nova quadra
                 </Button>
