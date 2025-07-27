@@ -4,4 +4,5 @@ export interface Court {
   pricePerHour: number
   isActive: boolean
   allowsRecurrence: boolean
+  sports: string[]
 }

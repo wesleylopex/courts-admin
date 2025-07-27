@@ -19,8 +19,12 @@ import { Separator } from '@/components/ui/separator'
 import OpeningHours from '../_components/opening-hours'
 import { CourtFormData, courtFormSchema } from '../schemas/court-schema'
 
+import { Court } from '@/types/court'
+import { useEffect } from 'react'
+
 type CourtFormProps = {
-  onSubmit: (data: CourtFormData) => void
+  onSubmit: (data: CourtFormData) => void,
+  court?: Court | null
 }
 
 const sports = [
@@ -50,12 +54,12 @@ const sports = [
   }
 ]
 
-export default function CourtForm ({ onSubmit }: CourtFormProps) {
+export default function CourtForm ({ onSubmit, court }: CourtFormProps) {
   const form = useForm<CourtFormData>({
     resolver: zodResolver(courtFormSchema),
     defaultValues: {
       isActive: true,
-      allowRecurrence: true,
+      allowsRecurrence: true,
       name: '',
       pricePerHour: 0,
       sports: [],
@@ -63,12 +67,22 @@ export default function CourtForm ({ onSubmit }: CourtFormProps) {
     }
   })
 
+  useEffect(() => {
+    form.reset({
+      isActive: court?.isActive ?? true,
+      allowsRecurrence: court?.allowsRecurrence ?? true,
+      name: court?.name ?? '',
+      pricePerHour: court?.pricePerHour ?? 0,
+      sports: court?.sports ?? []
+    })
+  }, [court, form])
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Card className="mt-10 w-full">
           <CardHeader>
-            <CardTitle className="text-2xl font-semibold">Nova quadra</CardTitle>
+            <CardTitle className="text-2xl font-semibold">{ court ? 'Editar quadra' : 'Criar quadra'}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 items-start">
@@ -103,7 +117,7 @@ export default function CourtForm ({ onSubmit }: CourtFormProps) {
                 />
                 <FormField
                   control={form.control}
-                  name="allowRecurrence"
+                  name="allowsRecurrence"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
@@ -198,7 +212,7 @@ export default function CourtForm ({ onSubmit }: CourtFormProps) {
                         render={({ field: controllerField }) => (
                           <MultipleSelector
                             commandProps={{
-                              label: 'Select frameworks',
+                              label: 'Selecione os esportes',
                             }}
                             value={sports.filter(option => controllerField.value.includes(option.value))}
                             onChange={(selectedOptions) => controllerField.onChange(selectedOptions.map(opt => opt.value))}
