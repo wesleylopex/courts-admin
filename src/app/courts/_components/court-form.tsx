@@ -1,11 +1,11 @@
 'use client'
 
+import { useEffect } from 'react'
 import Link from 'next/link'
-import { Controller, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-
 import { NumericFormat } from 'react-number-format'
 import { CircleDollarSign } from 'lucide-react'
+import { Controller, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 import { Card, CardContent, CardTitle, CardHeader, CardFooter } from '@/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -14,13 +14,10 @@ import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import MultipleSelector from '@/components/ui/multiselect'
-import { Separator } from '@/components/ui/separator'
 
-import OpeningHours from '../_components/opening-hours'
 import { CourtFormData, courtFormSchema } from '../schemas/court-schema'
 
 import { Court } from '@/types/court'
-import { useEffect } from 'react'
 
 type CourtFormProps = {
   onSubmit: (data: CourtFormData) => void,
@@ -62,8 +59,7 @@ export default function CourtForm ({ onSubmit, court }: CourtFormProps) {
       allowsRecurrence: true,
       name: '',
       pricePerHour: 0,
-      sports: [],
-      openingHours: []
+      sports: []
     }
   })
 
@@ -230,14 +226,14 @@ export default function CourtForm ({ onSubmit, court }: CourtFormProps) {
                 )}
               />
 
-              <div className="col-span-full">
+              {/* <div className="col-span-full">
                 <Separator className="mt-4" />
                 <h1 className="mt-8 font-semibold">Horários disponíveis</h1>
               </div>
 
               <div className="col-span-full">
                 <OpeningHours />
-              </div>
+              </div> */}
 
             </div>
           </CardContent>
