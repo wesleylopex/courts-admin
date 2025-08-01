@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect } from 'react'
 import Link from 'next/link'
 import { NumericFormat } from 'react-number-format'
 import { CircleDollarSign } from 'lucide-react'
@@ -16,12 +15,12 @@ import { Button } from '@/components/ui/button'
 import MultipleSelector from '@/components/ui/multiselect'
 
 import { CourtFormData, courtFormSchema } from '../schemas/court-schema'
-
 import { Court } from '@/types/court'
+import { useEffect } from 'react'
 
 type CourtFormProps = {
   onSubmit: (data: CourtFormData) => void,
-  court?: Court | null
+  court: Court | null
 }
 
 const sports = [
@@ -65,11 +64,7 @@ export default function CourtForm ({ onSubmit, court }: CourtFormProps) {
 
   useEffect(() => {
     form.reset({
-      isActive: court?.isActive ?? true,
-      allowsRecurrence: court?.allowsRecurrence ?? true,
-      name: court?.name ?? '',
-      pricePerHour: court?.pricePerHour ?? 0,
-      sports: court?.sports ?? []
+      ...court
     })
   }, [court, form])
 
@@ -78,7 +73,9 @@ export default function CourtForm ({ onSubmit, court }: CourtFormProps) {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Card className="mt-10 w-full">
           <CardHeader>
-            <CardTitle className="text-2xl font-semibold">{ court ? 'Editar quadra' : 'Criar quadra'}</CardTitle>
+            <CardTitle className="text-2xl font-semibold">
+              {court && court.name ? 'Editar quadra' : 'Criar quadra'}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 items-start">
