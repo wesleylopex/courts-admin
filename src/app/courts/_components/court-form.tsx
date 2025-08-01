@@ -20,7 +20,7 @@ import { useEffect } from 'react'
 
 type CourtFormProps = {
   onSubmit: (data: CourtFormData) => void,
-  court: Court | null
+  court?: Court | null
 }
 
 const sports = [
