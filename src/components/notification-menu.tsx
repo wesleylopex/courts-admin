@@ -1,62 +1,62 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { BellIcon } from "lucide-react"
+import { useState } from 'react'
+import { BellIcon } from 'lucide-react'
 
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from '@/components/ui/popover'
 
 const initialNotifications = [
   {
     id: 1,
-    user: "Chris Tompson",
-    action: "requested review on",
-    target: "PR #42: Feature implementation",
-    timestamp: "15 minutes ago",
+    user: 'Chris Tompson',
+    action: 'requested review on',
+    target: 'PR #42: Feature implementation',
+    timestamp: '15 minutes ago',
     unread: true,
   },
   {
     id: 2,
-    user: "Emma Davis",
-    action: "shared",
-    target: "New component library",
-    timestamp: "45 minutes ago",
+    user: 'Emma Davis',
+    action: 'shared',
+    target: 'New component library',
+    timestamp: '45 minutes ago',
     unread: true,
   },
   {
     id: 3,
-    user: "James Wilson",
-    action: "assigned you to",
-    target: "API integration task",
-    timestamp: "4 hours ago",
+    user: 'James Wilson',
+    action: 'assigned you to',
+    target: 'API integration task',
+    timestamp: '4 hours ago',
     unread: false,
   },
   {
     id: 4,
-    user: "Alex Morgan",
-    action: "replied to your comment in",
-    target: "Authentication flow",
-    timestamp: "12 hours ago",
+    user: 'Alex Morgan',
+    action: 'replied to your comment in',
+    target: 'Authentication flow',
+    timestamp: '12 hours ago',
     unread: false,
   },
   {
     id: 5,
-    user: "Sarah Chen",
-    action: "commented on",
-    target: "Dashboard redesign",
-    timestamp: "2 days ago",
+    user: 'Sarah Chen',
+    action: 'commented on',
+    target: 'Dashboard redesign',
+    timestamp: '2 days ago',
     unread: false,
   },
   {
     id: 6,
-    user: "Miky Derya",
-    action: "mentioned you in",
-    target: "Origin UI open graph image",
-    timestamp: "2 weeks ago",
+    user: 'Miky Derya',
+    action: 'mentioned you in',
+    target: 'Origin UI open graph image',
+    timestamp: '2 weeks ago',
     unread: false,
   },
 ]
@@ -148,8 +148,8 @@ export default function NotificationMenu() {
                 >
                   <span className="text-foreground font-medium hover:underline">
                     {notification.user}
-                  </span>{" "}
-                  {notification.action}{" "}
+                  </span>{' '}
+                  {notification.action}{' '}
                   <span className="text-foreground font-medium hover:underline">
                     {notification.target}
                   </span>
