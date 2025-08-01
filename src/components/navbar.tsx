@@ -19,10 +19,9 @@ import {
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: '/', label: 'Home' },
+  { href: '/', label: 'Dashboard' },
   { href: '/courts', label: 'Quadras' },
-  { href: '/pricing', label: 'Pricing' },
-  { href: '/about', label: 'About' },
+  { href: '/users', label: 'Usuários' }
 ]
 
 export default function Component() {
